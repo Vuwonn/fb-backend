@@ -26,7 +26,29 @@ app.use(cors());
 app.use(express.json());
 
 // Swagger UI — open http://localhost:3000/api-docs in the browser.
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Root route listing all available routes.
+app.get("/", (_req, res) => {
+  const endpoints = [
+    { method: "GET", path: "/", description: "This route list" },
+    { method: "GET", path: "/api-docs", description: "Swagger UI" },
+    { method: "POST", path: "/api/users/signup", description: "Create a user" },
+    { method: "GET", path: "/api/users", description: "List users" },
+    { method: "GET", path: "/api/users/:id", description: "Get a user" },
+    { method: "POST", path: "/api/posts", description: "Create a post" },
+    { method: "GET", path: "/api/posts", description: "List posts" },
+    { method: "GET", path: "/api/posts/:id", description: "Get a post" },
+    { method: "PATCH", path: "/api/posts/:id", description: "Update a post" },
+    { method: "DELETE", path: "/api/posts/:id", description: "Delete a post" },
+    { method: "POST", path: "/api/posts/:postId/like", description: "Toggle like on a post" },
+    { method: "POST", path: "/api/posts/:postId/comments", description: "Create a comment" },
+    { method: "GET", path: "/api/posts/:postId/comments", description: "List comments for a post" },
+    { method: "PATCH", path: "/api/comments/:id", description: "Update a comment" },
+    { method: "DELETE", path: "/api/comments/:id", description: "Delete a comment" },
+  ];
+  res.json({ message: "Facebook API", endpoints });
+});
 
 // All API routes live under /api/v1.
 app.use("/api", userRouter);
