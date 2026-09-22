@@ -28,7 +28,7 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Return "id" instead of "_id" and hide the internal "__v".
+// Return "id" instead of "_id" and hide the internal 
 postSchema.set("toJSON", {
   transform: (doc, ret) => {
     ret.id = ret._id.toString();
