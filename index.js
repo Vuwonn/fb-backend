@@ -3,7 +3,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
-import dns from 'dns';
+import dns from "dns";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import { connectDB } from "./config/db.js";
 import { swaggerDocument } from "./config/swagger.js";
@@ -26,6 +30,12 @@ app.use(cors());
 app.use(express.json());
 
 // Swagger UI — open http://localhost:3000/api-docs in the browser.
+// Serve the swagger-ui-dist assets from the repo (Vercel's serverless
+// bundler doesn't ship the ones inside node_modules).
+app.use(
+  "/api-docs",
+  express.static(path.join(__dirname, "swagger-ui-dist"), { index: false })
+);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Root route listing all available routes.
